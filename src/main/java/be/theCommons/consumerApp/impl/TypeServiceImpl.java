@@ -6,6 +6,7 @@ import be.theCommons.consumerApp.mapper.TypeMapper;
 import be.theCommons.consumerApp.service.TypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
+    @Cacheable("AllTypes")
     public List<TypeDTO> getAllTypes() {
         return typeRepository.findAll().stream()
                 .map(TypeMapper::toDTO)

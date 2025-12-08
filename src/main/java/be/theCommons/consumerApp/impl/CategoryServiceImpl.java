@@ -7,6 +7,7 @@ import be.theCommons.consumerApp.model.Category;
 import be.theCommons.consumerApp.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable("AllCategories")
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .map(CategoryMapper::catToDTO)
@@ -28,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable("AllCategoriesWithDishes")
     public List<CategoryDTO> getAllCategoriesWithDishes() {
         return categoryRepository.getAllCategoriesWithDishes().stream()
                 .map(CategoryMapper::toDTO)
@@ -35,6 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable("CategoriesByID")
     public CategoryDTO getCategoryWithDishes(Long id) {
         return categoryRepository.findById(id)
                 .map(CategoryMapper::toDTO)

@@ -7,6 +7,7 @@ import be.theCommons.consumerApp.model.enums.DishType;
 import be.theCommons.consumerApp.service.DishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Cacheable("AllDishes")
     public List<DishDTO> getAllDishesWithRelations() {
         return dishRepository.getAllDishesWithRelations().stream()
                 .map(DishMapper::toDTO)
@@ -28,6 +30,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Cacheable("DishesByCategory")
     public List<DishDTO> getDishesByCategory(String categoryName) {
         return dishRepository.getDishesByCategory(categoryName).stream()
                 .map(DishMapper::toDTO)
@@ -35,6 +38,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Cacheable("DishesByType")
     public List<DishDTO> getDishesByType(String type) {
         DishType parsed = DishType.valueOf(type.toUpperCase());
         return dishRepository.getDishesByType(parsed).stream()
